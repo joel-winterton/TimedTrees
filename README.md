@@ -10,8 +10,18 @@ Each method has its own directory, with a README.md on how to run the method fro
 Current methods are: 
 
 ### Least Squares Dating 
-**Method source:** *Thu-Hien To, Matthieu Jung, Samantha Lycett, Olivier Gascuel, Fast Dating Using Least-Squares Criteria and Algorithms, Systematic Biology, Volume 65, Issue 1, January 2016, Pages 82–97, https://doi.org/10.1093/sysbio/syv068*
+**Method source:** 
 
-**Implementation source:** *Bui Quang Minh, Heiko A Schmidt, Olga Chernomor, Dominik Schrempf, Michael D Woodhams, Arndt von Haeseler, Robert Lanfear, IQ-TREE 2: New Models and Efficient Methods for Phylogenetic Inference in the Genomic Era, Molecular Biology and Evolution, Volume 37, Issue 5, May 2020, Pages 1530–1534, https://doi.org/10.1093/molbev/msaa015*
+*Thu-Hien To, Matthieu Jung, Samantha Lycett, Olivier Gascuel, Fast Dating Using Least-Squares Criteria and Algorithms, Systematic Biology, Volume 65, Issue 1, January 2016, Pages 82–97, https://doi.org/10.1093/sysbio/syv068*
+
+**Implementation source:** 
+
+*Bui Quang Minh, Heiko A Schmidt, Olga Chernomor, Dominik Schrempf, Michael D Woodhams, Arndt von Haeseler, Robert Lanfear, IQ-TREE 2: New Models and Efficient Methods for Phylogenetic Inference in the Genomic Era, Molecular Biology and Evolution, Volume 37, Issue 5, May 2020, Pages 1530–1534, https://doi.org/10.1093/molbev/msaa015*
 
 **Folder**: `/LSD`
+### TreeTime
+**Method and implementation source:** 
+
+*Sagulenko, P., Puller, V., & Neher, R. A. (2018). TreeTime: Maximum-likelihood phylodynamic analysis. Virus Evolution, 4(1). https://doi.org/10.1093/ve/vex042*
+
+**Folder:**: `/TreeTime`
