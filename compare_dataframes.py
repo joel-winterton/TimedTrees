@@ -7,13 +7,16 @@ Current error functions to implement:
 
 Both dataframes should have columns with formats: id: int, date: datetime(%Y-%m-%d)
 """
+import pandas as pd
 
 
-def compare_dataframes(df1, df2):
+def compare_dataframes(truth, estimation):
     """
-
-    :param df1:
-    :param df2:
-    :return:
+    Creates dataframe to compare dates, input dataframes must both have columns id: int, date: datetime(%Y-%m-%d)
+    :param truth: Dataframe of true dates
+    :param estimation: Dataframe of estimated dates
+    :return: Dataframe with columns id: int, date_true: datetime(%Y-%m-%d),  date_estimated: datetime(%Y-%m-%d)
     """
-    result = df1.merge(df2, on='id', how='outer', left_suffix='_left', right_suffix='_right')
+    result = pd.merge(truth, estimation, on='id', how='outer', suffixes=('_true', '_estimated'))
+    result['difference'] = (result['date_true'] - result['date_estimated']).dt.days
+    return result
