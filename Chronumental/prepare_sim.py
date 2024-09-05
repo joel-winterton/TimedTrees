@@ -37,6 +37,6 @@ os.mkdir(output_path)
 Phylo.write(rescaled_tree, output_path + 'input.tree', 'newick')
 
 dates = pd.read_csv(sim_data_path + 'dated_metadata.csv')
-dates.rename(columns={'time': 'date'})
+dates.rename(columns={'time': 'date'}, inplace=True)
 dates = dates[['strain', 'date']]
 dates.to_csv(output_path + 'dates.csv', index=False)
