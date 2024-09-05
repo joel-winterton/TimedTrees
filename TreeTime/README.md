@@ -5,5 +5,5 @@ There's nothing special about this setup, just make sure you're able to `import 
 ## How to use
 Navigate to the SuperSimPy output folder.
 ```shell
-treetime --tree sim.substitutions.tree --dates full_metadata.csv --outdir timetree --name-column strain --date-column time --sequence-length=31101
+treetime --tree sim.substitutions.tree --dates dated_metadata.csv --outdir TreeTime --name-column strain --date-column time --sequence-length=31101 --keep-root --coalescent=skyline --stochastic-resolve
 ```
