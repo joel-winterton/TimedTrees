@@ -33,7 +33,7 @@ def scale_tree(root):
 
 rescaled_tree = scale_tree(mut_tree)
 output_path = sim_data_path + 'Chronumental/'
-os.mkdir(output_path)
+os.mkdir(output_path, exist_ok=True)
 Phylo.write(rescaled_tree, output_path + 'input.tree', 'newick')
 
 dates = pd.read_csv(sim_data_path + 'dated_metadata.csv')
