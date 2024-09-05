@@ -23,5 +23,6 @@ if 'dates_treetime' in args:
 if 'dates_chronumental' in args:
     graph_args['chronumental_date_path'] = args['dates_chronumental']
 print("Creating graphs!")
-grapher = Graphs(*graph_args)
+print(graph_args)
+grapher = Graphs(**graph_args)
 grapher.run_all()

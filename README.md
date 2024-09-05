@@ -2,9 +2,15 @@
 This repository contains the code necessary to reproduce each of the benchmarked methods for creating timed trees on pandemic-scale phylogenetic trees.
 Each method is benchmarked using data simulated from the pipeline https://github.com/joely-w/SuperSimPy. All preprocessing steps assume you have all the output data from a SuperSimPy simulation.
 
+
 The EBI HPC was used to run large sample simulations using SuperSimPy, specifically several 500k, 1 million and 5 million sample trees.
 Contact me if you want to use these.
 
+## Graphs
+Chronumental benchmark example call: 
+```shell
+python3 benchmark.py --output_dir='./Chronumental/1k/' --dates_true='/home/joel/EBI/TimedTreesData/1000/dated_country_labelled_metadata.tsv' --tree_true='/home/joel/EBI/TimedTreesData/1000/sim.substitutions.tree' --dates_chronumental='/home/joel/EBI/TimedTreesData/1000/Chronumental/chronumental_dates.tsv'
+```
 ## Benchmarked methods
 Each method has its own directory, with a README.md on how to run the method from the simulated data. 
 Current methods are: 

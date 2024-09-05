@@ -46,7 +46,7 @@ class Graphs:
         number_of_samples = (estimated.shape[0] - 1) / 2
         fig, axs = plt.subplots(2, figsize=(6, 8))
         ax1, ax2 = axs
-        fig.suptitle(f'{algorithm} benchmark with {str(number_of_samples)} samples.')
+        fig.suptitle(f'{algorithm} benchmark with {str(int(number_of_samples))} samples.')
 
         # Separate into internal and external nodes
         external = comparison[comparison['internal'] == False]
