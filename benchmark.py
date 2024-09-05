@@ -14,40 +14,63 @@ mpl.rcParams['figure.dpi'] = 600
 
 
 class Benchmark:
-    def __init__(self, true_dates_path: str, source_tree_path: str, treetime_date_path=None, ):
+    def __init__(self, true_dates_path: str, source_tree_path: str, treetime_date_path=None,
+                 chronumental_date_path=None):
         self.truth = input_dates('truth', datepath=true_dates_path)
+        self.algorithms = dict()
         if treetime_date_path:
-            self.treetime = input_dates('treetime', datepath=treetime_date_path, treepath=source_tree_path)
-        treetime_errors = compare_dataframes(self.truth, self.treetime)
+            self.algorithms['TreeTime'] = input_dates('treetime', datepath=treetime_date_path,
+                                                      treepath=source_tree_path)
+        if chronumental_date_path:
+            self.algorithms['Chronumental'] = input_dates('chronumental', datepath=chronumental_date_path,
+                                                          treepath=source_tree_path)
 
-        fig, ax = plt.subplots()
+    def run(self, algorithm: str):
+        if algorithm in self.algorithms:
+            return self.graph(self.truth, self.algorithms[algorithm], algorithm)
+        else:
+            raise ValueError('Algorithm not recognized!')
+
+    def graph(self, truth, estimated, algorithm):
+        comparison = compare_dataframes(truth, estimated)
+        number_of_samples = (estimated.shape[0] - 1) / 2
+        fig, axs = plt.subplots(2, figsize=(6, 8))
+        ax1, ax2 = axs
+        fig.suptitle(f'{algorithm} benchmark with {str(number_of_samples)} samples.')
+
         # Separate into internal and external nodes
-        external = treetime_errors[treetime_errors['internal'] == False]
-        internal = treetime_errors[treetime_errors['internal'] == True]
+        external = comparison[comparison['internal'] == False]
+        internal = comparison[comparison['internal'] == True]
 
         # Plot true dates
-        ax.scatter(external['id'], external['date_true'], c='green', alpha=0.5, s=3, marker='^',
-                   label='True external date')
-        ax.scatter(external['id'], external['date_estimated'], c='red', marker='^', s=1,
-                   label='Estimated external date')
-        ax.scatter(internal['id'], internal['date_estimated'], c='red', s=3,
-                   label='Estimated internal date')
+        ax1.scatter(external['id'], external['date_true'], c='green', alpha=0.5, s=3, marker='^',
+                    label='True external date')
+        ax1.scatter(external['id'], external['date_estimated'], c='red', marker='^', s=1,
+                    label='Estimated external date')
+        ax1.scatter(internal['id'], internal['date_estimated'], c='red', s=3,
+                    label='Estimated internal date')
 
-        ax.scatter(internal['id'], internal['date_true'], c='green', s=1, label='True internal date')
+        ax1.scatter(internal['id'], internal['date_true'], c='green', s=1, label='True internal date')
 
-        ax.legend()
-        ax.set_title('Date error per node')
-        ax.set_xlabel('Node ID (post-order)')
-        ax.set_ylabel('Date')
-        plt.show(block=True)
-        fig1, ax1 = plt.subplots()
-        ax1.scatter(treetime_errors['date_true'], treetime_errors['difference'], c='red', s=0.5)
-        ax1.set_ylabel('Error (days)')
-        ax1.set_xlabel('Node true date')
+        ax1.legend()
+        ax1.set_title('Date error per node')
+        ax1.set_xlabel('Node ID (post-order)')
+        ax1.set_ylabel('Date')
+
+        ax2.scatter(comparison['date_true'], comparison['difference'], c='red', s=0.5)
+        ax2.set_ylabel('Error (days)')
+        ax2.set_xlabel('Node true date')
+        ax2.set_ylim([-300, 800])
+        for q in internal['difference'].quantile([0.25, 0.5, 0.75]):
+            print(q)
         plt.show(block=True)
 
 
 if __name__ == '__main__':
-    benchmarked = Benchmark(true_dates_path='/home/joel/EBI/SuperSimPy/output/dated_country_labelled_metadata.tsv',
-                            source_tree_path='/home/joel/EBI/SuperSimPy/output/sim.substitutions.tree',
-                            treetime_date_path='/home/joel/EBI/SuperSimPy/timetree/dates.tsv')
+    benchmarker = Benchmark(true_dates_path='/home/joel/EBI/TimedTreesData/1000/dated_country_labelled_metadata.tsv',
+                            source_tree_path='/home/joel/EBI/TimedTreesData/1000/sim.substitutions.tree',
+                            treetime_date_path='/home/joel/EBI/TimedTreesData/1000/TreeTime/dates.tsv',
+                            chronumental_date_path='/home/joel/EBI/TimedTreesData/1000/Chronumental'
+                                                   '/chronumental_dates.tsv')
+    benchmarker.run('Chronumental')
+    benchmarker.run('TreeTime')

@@ -15,6 +15,8 @@ def input_dates(estimation_source: str, **kwargs):
         df = TreeTime(**kwargs).dates
     elif estimation_source == 'truth':
         df = Truth(**kwargs).dates
+    elif estimation_source == 'chronumental':
+        df = Chronumental(**kwargs).dates
     else:
         raise ValueError(f'{estimation_source} is not a valid date format identifier!')
     return df.sort_values('id')
@@ -28,11 +30,36 @@ class Truth:
         self.dates = dates[['id', 'date']]
 
 
+class Chronumental:
+    def __init__(self, treepath: str, datepath: str):
+        if treepath is None or datepath is None:
+            raise ValueError('Missing parameter for Chronumental parser!')
+        print(f'Loading data for Chronumental from dates {datepath} and tree {treepath}.')
+        self.tree = Phylo.read(treepath, format='newick', rooted=True)
+        self.lookup = self.create_id_lookup()
+        self.dates = self.get_dates(datepath)
+
+    def create_id_lookup(self):
+        lookup = set()
+        for clade in self.tree.get_nonterminals():
+            name = str(int(clade.confidence))
+            if name not in lookup:
+                lookup.add(name)
+        return lookup
+
+    def get_dates(self, datepath):
+        dates = pd.read_csv(datepath, sep='\t')
+        dates['internal'] = dates['strain'].apply(lambda x: x in self.lookup)
+        dates.rename(columns={'strain': 'id', 'predicted_date': 'date'}, inplace=True)
+        dates['date'] = pd.to_datetime(dates['date'], format='%Y-%m-%d %H:%M:%S.%f')
+        return dates[['id', 'date', 'internal']]
+
+
 class TreeTime:
     def __init__(self, treepath: str, datepath: str):
         if treepath is None or datepath is None:
             raise ValueError('Missing parameter for TreeTime parser!')
-        print(f'Loading data for TreeTime from dates {datepath} and tree {treepath}')
+        print(f'Loading data for TreeTime from dates {datepath} and tree {treepath}.')
         self.tree = Phylo.read(treepath, format='newick', rooted=True)
 
         self.lookup = self.create_id_lookup()
@@ -64,7 +91,7 @@ class TreeTime:
 
     def get_dates(self, datepath):
         dates = pd.read_csv(datepath, sep='\t')
-        dates['internal'] = dates['#node'].apply(lambda x: x not in self.lookup)
+        dates['internal'] = dates['#node'].apply(lambda x: x in self.lookup)
         dates['#node'] = dates['#node'].apply(lambda x: self.parse_id(x))
         dates.rename(columns={'#node': 'id'}, inplace=True)
         dates['date'] = pd.to_datetime(dates['date'], format='%Y-%m-%d')
