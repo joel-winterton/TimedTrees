@@ -11,6 +11,7 @@ from compare_dataframes import compare_dataframes
 import datetime
 import matplotlib as mpl
 import pandas as pd
+import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -37,8 +38,9 @@ class Graphs:
         Run all benchmarks that are available given inputted data.
         :return:
         """
-        for algorithm in self.algorithms:
-            self.graph(self.truth, self.algorithms[algorithm], algorithm)
+        self.violin_plot()
+        for algo1 in self.algorithms:
+            self.graph(self.truth, self.algorithms[algo1], algo1)
 
     def run(self, algorithm: str):
         if algorithm in self.algorithms:
@@ -46,35 +48,32 @@ class Graphs:
         else:
             raise ValueError('Algorithm not recognized!')
 
-    def get_month_key(self, date):
+    def violin_plot(self):
         """
-        Returns first of month that date is in.
-        :param date:
-        :return:
-        """
-        return datetime.date(date.year, date.month, 1)
-
-    def violin_plot(self, algorithm, internal):
-        """
-        Violin plot for each month of internal nodes months membership distribution.
+        Violin plot for each month of internal nodes months membership distribution for each algorithm passed.
         :param algorithm:
-        :param internal:
+        :param internal_datasets:
         :return:
         """
+        grouped_internal_algos = dict()
+        for algo in self.algorithms:
+            dataset = compare_dataframes(self.truth,self.algorithms[algo])
+            internal = dataset[dataset['internal'] == True]
+            grouped_internal_algos[algo] = pd.DataFrame(data={
+                'date_true': internal['date_true'].apply(lambda x: datetime.date(x.year, x.month, 1)),
+                'difference': internal['difference']})
 
-        grouped_internal = pd.DataFrame(
-            data={'date_true': internal['date_true'].apply(lambda x: self.get_month_key(x)),
-                  'difference': internal['difference']})
+        grouped_internal = pd.concat(grouped_internal_algos, names=['algorithm'])
 
         f, ax = plt.subplots(figsize=(8, 4))
-        sns.violinplot(x="date_true", y="difference", data=grouped_internal, density_norm='count')
+        sns.violinplot(x="date_true", y="difference", data=grouped_internal, density_norm='count', hue='algorithm')
         sns.despine(left=True)
 
-        f.suptitle(f'Monthly error distribution for {algorithm} with {self.number_of_samples} samples.')
+        f.suptitle(f'Monthly error distributions with {self.number_of_samples} samples.')
         ax.set_xlabel("True date")
         ax.set_ylabel("Error (days)")
         if self.output_dir:
-            plt.savefig(f"{self.output_dir}{algorithm} violin.png")
+            plt.savefig(f"{self.output_dir} violin.png")
         else:
             plt.show()
 
@@ -121,11 +120,12 @@ class Graphs:
         internal = comparison[comparison['internal'] == True]
 
         self.scatter_plots(algorithm, internal, external)
-        self.violin_plot(algorithm, internal)
 
 
 if __name__ == '__main__':
     benchmarker = Graphs(true_dates_path='/home/joel/EBI/TimedTreesData/1000/dated_country_labelled_metadata.tsv',
                          source_tree_path='/home/joel/EBI/TimedTreesData/1000/sim.substitutions.tree',
-                         treetime_date_path='/home/joel/EBI/TimedTreesData/1000/TreeTime/dates.tsv')
-    benchmarker.run('TreeTime')
+                         treetime_date_path='/home/joel/EBI/TimedTreesData/1000/TreeTime/dates.tsv',
+                         chronumental_date_path='/home/joel/EBI/TimedTreesData/1000/Chronumental'
+                                                '/chronumental_dates.tsv')
+    benchmarker.run_all()
