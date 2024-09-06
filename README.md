@@ -1,19 +1,28 @@
 # Timed Trees
-This repository contains the code necessary to reproduce each of the benchmarked methods for creating timed trees on pandemic-scale phylogenetic trees.
+This repository contains the code necessary to reproduce each of the benchmarked methods for creating timed trees on pandemic-scale phylogenetic trees, as well as visualise results.
 Each method is benchmarked using data simulated from the pipeline https://github.com/joely-w/SuperSimPy. All preprocessing steps assume you have all the output data from a SuperSimPy simulation.
 
 
-The EBI HPC was used to run large sample simulations using SuperSimPy, specifically several 500k, 1 million and 5 million sample trees.
+The EBI HPC was used to run large sample simulations using SuperSimPy.
 Contact me if you want to use these.
 
-## Graphs
-Chronumental benchmark example call: 
+## Generating Graphs
+The visualisation script currently outputs error visualisations for TreeTime and Chronumental (the script will visualise all algorithm estimates passed to it that it accepts).
+
+Chronumental data flag: `--dates_chronumental=<path to dates tsv output by Chronumental`
+
+TreeTime data flag: `--dates_treetime=<path to dates.tsv file from TreeTime output>`
+
 ```shell
-python3 benchmark.py --output_dir='./Chronumental/750k/' --dates_true='/hps/nobackup/goldman/joel/many_sims_biased/750000/dated_country_labelled_metadata.tsv' --tree_true='/hps/nobackup/goldman/joel/many_sims_biased/750000/sim.substitutions.tree' --dates_chronumental='/hps/nobackup/goldman/joel/many_sims_biased/750000/Chronumental/chronumental_dates_dates.csv.tsv'
+python3 benchmark.py --output_dir=OUTPUT_DIR --dates_true=TRUE_DATES_TSV --tree_true=TRUE_NEWICK_TREE --dates_chronumental=CHRONUMENTAL_ESTIMATED_DATES_TSV --dates_treetime=TREETIME_ESTIMATED_DATES_TSV
 ```
 ## Benchmarked methods
 Each method has its own directory, with a README.md on how to run the method from the simulated data. 
 Current methods are: 
+### Chronumental 
+**Method and implementation source:** 
+*Sanderson, T., 2021. Chronumental: time tree estimation from very large phylogenies. https://doi.org/10.1101/2021.10.27.465994*
+**Folder**: `/Chronumental`
 
 ### Least Squares Dating 
 **Method source:** 
