@@ -9,7 +9,7 @@ Contact me if you want to use these.
 ## Graphs
 Chronumental benchmark example call: 
 ```shell
-python3 benchmark.py --output_dir='./Chronumental/750k/' --dates_true='/home/joel/EBI/TimedTreesData/1000/dated_country_labelled_metadata.tsv' --tree_true='/home/joel/EBI/TimedTreesData/1000/sim.substitutions.tree' --dates_chronumental='/home/joel/EBI/TimedTreesData/1000/Chronumental/chronumental_dates.tsv'
+python3 benchmark.py --output_dir='./Chronumental/750k/' --dates_true='/hps/nobackup/goldman/joel/many_sims_biased/750000/dated_country_labelled_metadata.tsv' --tree_true='/hps/nobackup/goldman/joel/many_sims_biased/750000/sim.substitutions.tree' --dates_chronumental='/hps/nobackup/goldman/joel/many_sims_biased/750000/Chronumental/chronumental_dates_dates.csv.tsv'
 ```
 ## Benchmarked methods
 Each method has its own directory, with a README.md on how to run the method from the simulated data. 

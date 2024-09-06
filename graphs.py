@@ -7,7 +7,7 @@ Currently implemented:
 import matplotlib.pyplot as plt
 from parse_dates import input_dates
 from compare_dataframes import compare_dataframes
-
+import datetime
 import matplotlib as mpl
 
 mpl.rcParams['figure.dpi'] = 600
@@ -16,8 +16,7 @@ mpl.rcParams['figure.dpi'] = 600
 class Graphs:
     def __init__(self, true_dates_path: str, source_tree_path: str, treetime_date_path=None,
                  chronumental_date_path=None, output_dir=None):
-        if output_dir:
-            self.output_dir = output_dir
+        self.output_dir = output_dir
         self.truth = input_dates('truth', datepath=true_dates_path)
         self.algorithms = dict()
         if treetime_date_path:
@@ -51,22 +50,17 @@ class Graphs:
         # Separate into internal and external nodes
         external = comparison[comparison['internal'] == False]
         internal = comparison[comparison['internal'] == True]
-
         # Plot true dates
-        ax1.scatter(external['id'], external['date_true'], c='green', alpha=0.5, s=3, marker='^',
-                    label='True external date')
-        ax1.scatter(external['id'], external['date_estimated'], c='red', marker='^', s=1,
-                    label='Estimated external date')
-        ax1.scatter(internal['id'], internal['date_estimated'], c='red', s=3,
-                    label='Estimated internal date')
-
-        ax1.scatter(internal['id'], internal['date_true'], c='green', s=1, label='True internal date')
-
+        ax1.scatter(external['date_true'], external['date_estimated'], c='blue', s=0.5,
+                    label='External nodes date')
+        ax1.scatter(internal['date_true'], internal['date_estimated'], c='orange', s=0.5,
+                    label='Internal nodes date')
+        ax1.plot(comparison['date_true'], comparison['date_true'], linestyle='dotted', c='grey', zorder=2)
         ax1.legend()
-        ax1.set_title('Date error per node')
-        ax1.set_xlabel('Node ID (post-order)')
-        ax1.set_ylabel('Date')
-
+        ax1.set_title('Date estimation comparison')
+        ax1.set_xlabel('True date of node')
+        ax1.set_ylabel('Estimated date of node')
+        ax1.set_ylim([datetime.date(2018, 1, 1), datetime.date(2020, 10, 1)])
         ax2.scatter(comparison['date_true'], comparison['difference'], c='red', s=0.5)
         ax2.set_ylabel('Error (days)')
         ax2.set_xlabel('Node true date')

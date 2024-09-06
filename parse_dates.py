@@ -42,9 +42,10 @@ class Chronumental:
     def create_id_lookup(self):
         lookup = set()
         for clade in self.tree.get_nonterminals():
-            name = str(int(clade.confidence))
+            name = int(clade.confidence)
             if name not in lookup:
                 lookup.add(name)
+
         return lookup
 
     def get_dates(self, datepath):
