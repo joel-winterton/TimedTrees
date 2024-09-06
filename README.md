@@ -7,6 +7,11 @@ The EBI HPC was used to run large sample simulations using SuperSimPy.
 Contact me if you want to use these.
 
 ## Generating Graphs
+<p float="left">
+  <img src="https://github.com/user-attachments/assets/14a1033d-5cf1-4596-8f5b-b5ab2433a66c" width="100" alt="Chronumental violin plot" />
+  <img src="https://github.com/user-attachments/assets/9911019f-d7ec-4e8a-bea0-31d23c0da2b2" width="100" alt="Chronumental scatter plot"/> 
+</p>
+
 The visualisation script currently outputs error visualisations for TreeTime and Chronumental (the script will visualise all algorithm estimates passed to it that it accepts).
 
 Chronumental data flag: `--dates_chronumental=<path to dates tsv output by Chronumental`
