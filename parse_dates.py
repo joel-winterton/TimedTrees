@@ -95,6 +95,7 @@ class TreeTime:
         dates['internal'] = dates['#node'].apply(lambda x: x in self.lookup)
         dates['#node'] = dates['#node'].apply(lambda x: self.parse_id(x))
         dates.rename(columns={'#node': 'id'}, inplace=True)
+        dates = dates[dates['date'] != '--']
         dates['date'] = pd.to_datetime(dates['date'], format='%Y-%m-%d')
         return dates[['id', 'date', 'internal']]
 
