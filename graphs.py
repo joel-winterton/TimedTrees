@@ -11,11 +11,12 @@ from compare_dataframes import compare_dataframes
 import datetime
 import matplotlib as mpl
 import pandas as pd
-import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 mpl.rcParams['figure.dpi'] = 600
+mpl.rcParams.update({'figure.autolayout': True})
+
 sns.set(style="whitegrid", palette="pastel", color_codes=True)
 
 
