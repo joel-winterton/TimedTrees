@@ -2,4 +2,5 @@ pandas~=2.2.2
 phylo-treetime
 matplotlib
 argparse~=1.4.0
-seaborn
+seaborn~=0.13.2
+numpy~=1.26.4
