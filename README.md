@@ -17,7 +17,8 @@ Chronumental data flag: `--dates_chronumental=<path to dates tsv output by Chron
 TreeTime data flag: `--dates_treetime=<path to dates.tsv file from TreeTime output>`
 
 ```shell
-python3 benchmark.py --output_dir=OUTPUT_DIR --dates_true=TRUE_DATES_TSV --tree_true=TRUE_NEWICK_TREE --dates_chronumental=CHRONUMENTAL_ESTIMATED_DATES_TSV --dates_treetime=TREETIME_ESTIMATED_DATES_TSV
+EXPORT OUTPUT_DIR = <absolute path to SuperSimPy output>
+python3 benchmark.py --output_dir=${OUTPUT_DIR} --dates_true=${OUTPUT_DIR}dated_country_labelled_metadata.tsv --tree_true=${OUTPUT_DIR}sim.tree --dates_chronumental=${OUTPUT_DIR}Chronumental/chronumental_dates_dates.csv.tsv --dates_treetime=${OUTPUT_DIR}TreeTime/dates.tsv
 ```
 ## Benchmarked methods
 Each method has its own directory, with a README.md on how to run the method from the simulated data. 
