@@ -89,7 +89,7 @@ class Graphs:
         """
         fig, axs = plt.subplots(2, figsize=(6, 8))
         ax1, ax2 = axs
-        fig.suptitle(f'{algorithm} benchmark with {str(int(self.number_of_samples))} tips and '
+        fig.suptitle(f'{algorithm} benchmark with {str(int(self.number_of_samples))} tips, \n '
                      f'{str(int(internal["date_true"].shape[0]))} internal nodes.')
         ax1.scatter(external['date_true'], external['date_estimated'], c='blue', s=0.5,
                     label='External nodes date')
