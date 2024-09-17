@@ -63,7 +63,6 @@ class Graphs:
             grouped_internal_algos[algo] = pd.DataFrame(data={
                 'date_true': internal['date_true'].apply(lambda x: datetime.date(x.year, x.month, 1)),
                 'difference': internal['difference']})
-
         grouped_internal = pd.concat(grouped_internal_algos, names=['algorithm'])
 
         f, ax = plt.subplots(figsize=(8, 4))
@@ -90,7 +89,8 @@ class Graphs:
         """
         fig, axs = plt.subplots(2, figsize=(6, 8))
         ax1, ax2 = axs
-        fig.suptitle(f'{algorithm} benchmark with {str(int(self.number_of_samples))} samples.')
+        fig.suptitle(f'{algorithm} benchmark with {str(int(self.number_of_samples))} tips and '
+                     f'{str(int(internal["date_true"].shape[0]))} internal nodes.')
         ax1.scatter(external['date_true'], external['date_estimated'], c='blue', s=0.5,
                     label='External nodes date')
         ax1.scatter(internal['date_true'], internal['date_estimated'], c='orange', s=0.5,
